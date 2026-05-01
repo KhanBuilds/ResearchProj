@@ -1,0 +1,258 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "276ed22f",
+   "metadata": {
+    "_cell_guid": "b1076dfc-b9ad-4769-8c92-a6c4dae69d19",
+    "_uuid": "8f2839f25d086af736a60e9eeb907d3b93b6e0e5",
+    "execution": {
+     "iopub.execute_input": "2026-05-01T18:33:21.867110Z",
+     "iopub.status.busy": "2026-05-01T18:33:21.866032Z",
+     "iopub.status.idle": "2026-05-01T18:33:23.039772Z",
+     "shell.execute_reply": "2026-05-01T18:33:23.038486Z"
+    },
+    "papermill": {
+     "duration": 1.180156,
+     "end_time": "2026-05-01T18:33:23.042045+00:00",
+     "exception": false,
+     "start_time": "2026-05-01T18:33:21.861889+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/activity_labels.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/README.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/features_info.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/features.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/subject_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/y_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/X_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/Inertial Signals/body_acc_y_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/Inertial Signals/total_acc_y_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/Inertial Signals/total_acc_z_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/Inertial Signals/body_acc_z_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/Inertial Signals/body_gyro_y_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/Inertial Signals/body_gyro_x_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/Inertial Signals/body_gyro_z_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/Inertial Signals/total_acc_x_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/test/Inertial Signals/body_acc_x_test.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/X_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/subject_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/y_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals/total_acc_z_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals/body_acc_x_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals/body_gyro_x_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals/body_gyro_z_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals/body_acc_z_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals/total_acc_x_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals/total_acc_y_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals/body_acc_y_train.txt\n",
+      "/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals/body_gyro_y_train.txt\n"
+     ]
+    }
+   ],
+   "source": [
+    "# This Python 3 environment comes with many helpful analytics libraries installed\n",
+    "# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python\n",
+    "# For example, here's several helpful packages to load\n",
+    "\n",
+    "import numpy as np # linear algebra\n",
+    "import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)\n",
+    "\n",
+    "# Input data files are available in the read-only \"../input/\" directory\n",
+    "# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory\n",
+    "\n",
+    "import os\n",
+    "for dirname, _, filenames in os.walk('/kaggle/input'):\n",
+    "    for filename in filenames:\n",
+    "        print(os.path.join(dirname, filename))\n",
+    "\n",
+    "# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using \"Save & Run All\" \n",
+    "# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1bbcde59",
+   "metadata": {
+    "papermill": {
+     "duration": 0.00166,
+     "end_time": "2026-05-01T18:33:23.045669+00:00",
+     "exception": false,
+     "start_time": "2026-05-01T18:33:23.044009+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Loading the Dataset"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "6f546c2d",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-05-01T18:33:23.050815Z",
+     "iopub.status.busy": "2026-05-01T18:33:23.049979Z",
+     "iopub.status.idle": "2026-05-01T18:33:24.767607Z",
+     "shell.execute_reply": "2026-05-01T18:33:24.766587Z"
+    },
+    "papermill": {
+     "duration": 1.722479,
+     "end_time": "2026-05-01T18:33:24.769709+00:00",
+     "exception": false,
+     "start_time": "2026-05-01T18:33:23.047230+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Raw 6-axis data shape: (7352, 128, 6)\n"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "\n",
+    "def load_raw_signals(folder_path, filenames): # a function to load the dataset\n",
+    "    signals = []\n",
+    "    for name in filenames:\n",
+    "        file_path = f\"{folder_path}/{name}.txt\" # makes the file path fro every file\n",
+    "        data = np.loadtxt(file_path) #Loads the data from the file into an Numpy array\n",
+    "        signals.append(data) # appends the list we created with the new readings\n",
+    "    \n",
+    "    \n",
+    "    return np.transpose(np.array(signals), (1, 2, 0)) # for our project it requires we have the array in (sample, step, feature) format\n",
+    "\n",
+    "# file names we want to load\n",
+    "filenames = [\n",
+    "    'body_acc_x_train', 'body_acc_y_train', 'body_acc_z_train',\n",
+    "    'body_gyro_x_train', 'body_gyro_y_train', 'body_gyro_z_train'\n",
+    "]\n",
+    "\n",
+    "#The absolut path for the folder in our dataset where the files are located\n",
+    "raw_data_path = '/kaggle/input/datasets/rayanalam1/rawhar/UCI HAR Dataset/train/Inertial Signals'\n",
+    "X_raw = load_raw_signals(raw_data_path, filenames)\n",
+    "\n",
+    "print(f\"Raw 6-axis data shape: {X_raw.shape}\") #printing the shape"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9a52840d",
+   "metadata": {
+    "papermill": {
+     "duration": 0.001621,
+     "end_time": "2026-05-01T18:33:24.773240+00:00",
+     "exception": false,
+     "start_time": "2026-05-01T18:33:24.771619+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Normalizing the data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "9edd5868",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-05-01T18:33:24.778406Z",
+     "iopub.status.busy": "2026-05-01T18:33:24.778044Z",
+     "iopub.status.idle": "2026-05-01T18:33:24.851903Z",
+     "shell.execute_reply": "2026-05-01T18:33:24.850895Z"
+    },
+    "papermill": {
+     "duration": 0.078865,
+     "end_time": "2026-05-01T18:33:24.853912+00:00",
+     "exception": false,
+     "start_time": "2026-05-01T18:33:24.775047+00:00",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "X_raw normalised's shape is (7352, 128, 6) \n"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "mean = np.mean(X_raw, axis=(0,1)) #this calculates the mean and makes sure only the sample and timesteps are used for the calculation\n",
+    "std= np.std(X_raw, axis=(0, 1)) # this calculates the standard deviation for each sensor \n",
+    "\n",
+    "X_raw_normalised= (X_raw - mean)/ (std + 1e-8) # this normalizes the whole sample so It measures in 'standard deviations from the mean' and not in physical units\n",
+    "print(f\"X_raw normalised's shape is {X_raw_normalised.shape} \")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [
+    {
+     "databundleVersionId": 17005809,
+     "datasetId": 10286923,
+     "sourceId": 16039518,
+     "sourceType": "datasetVersion"
+    }
+   ],
+   "dockerImageVersionId": 31328,
+   "isGpuEnabled": false,
+   "isInternetEnabled": false,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.12"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 6.95237,
+   "end_time": "2026-05-01T18:33:25.274446+00:00",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2026-05-01T18:33:18.322076+00:00",
+   "version": "2.7.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
